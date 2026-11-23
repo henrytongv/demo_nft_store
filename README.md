@@ -175,6 +175,35 @@ También puedes ejecutar `npx nuxi typecheck` si tu editor/configuración lo sop
 - Los errores de API se registran en la consola del servidor y también se agregan como JSON en `logs/server-errors.log` para facilitar el diagnóstico.
 - Si una creación de colección falla después de subir imágenes a Pinata, es posible que existan CIDs huérfanos en IPFS; la colección no se activa en Neon ni se muestran NFTs en la tienda hasta que el proceso complete correctamente.
 
+### Advertencia "Malicious dApp" en HashPack
+
+Al conectar la billetera en producción puede aparecer el mensaje:
+
+> *Malicious dApp — This dapp is blacklisted as malicious - please do not interact with it*
+
+**No es un error del código.** HashPack revisa la reputación de cada sitio que intenta conectarse, usando dos sistemas de seguridad:
+
+- **Blockaid**: servicio integrado en HashPack que analiza dApps y detecta sitios sospechosos al momento de conectar.
+- **Verify API de WalletConnect/Reown**: compara el dominio contra listas de amenazas de proveedores como Hexagate, ChainPatrol e Hypernative.
+
+Registrar el dominio en el *allowlist* de Reown **no elimina esta advertencia**: el allowlist solo controla qué dominios pueden usar tu `projectId`, no la reputación del dominio.
+
+**¿Por qué se marca como malicioso?** Es un falso positivo automático. Los detectores desconfían de dominios con patrones típicos de sitios de phishing o de robo de fondos (*wallet drainers*):
+
+- Subdominios gratuitos compartidos, como `*.up.railway.app`, muy usados por sitios fraudulentos.
+- Palabras como **"nft"**, **"demo"**, *mint* o *airdrop* combinadas con una conexión de billetera en un sitio recién creado.
+
+**Cómo lo solucionamos:** compramos un **dominio propio que no contiene las palabras "nft" ni "demo"**, lo configuramos como dominio personalizado en Railway y lo agregamos al allowlist de Reown (junto con `http://localhost:3000` para seguir probando en local). Con ese dominio la advertencia dejó de aparecer.
+
+Otras alternativas:
+
+- Cambiar el subdominio de Railway por uno más descriptivo (puede no ser suficiente si todo el dominio de Railway tiene mala reputación).
+- Reportar el falso positivo a Blockaid, a Reown (en su Discord) y al soporte de HashPack. La revisión puede tardar varios días.
+
+No se requieren cambios en el código: la app envía `window.location.origin` como URL de la metadata de WalletConnect, por lo que funciona automáticamente con cualquier dominio.
+
+> **Lección para el taller:** esta advertencia es un buen ejemplo de cómo las billeteras Web3 protegen a sus usuarios. Nunca ignores una alerta así en un sitio que no conozcas o no controles.
+
 ## Aviso
 
 Esta web es exclusivamente de uso educativo e informativo. Contiene datos de prueba en ambiente Testnet. No tiene ningún valor comercial ni real.
