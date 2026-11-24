@@ -13,6 +13,7 @@
     "loadError": "No se pudo cargar la colección",
     "loading": "Cargando colección...",
     "available": "Disponibles",
+    "price": "Precio",
     "buy": "Comprar",
     "soldOut": "Agotado",
     "serial": "Números de serie",
@@ -59,6 +60,30 @@
       "outOfStock": "El NFT seleccionado ya no está disponible.",
       "generic": "Ocurrió un error inesperado. Intenta nuevamente."
     }
+  },
+  "contest": {
+    "name": "Hedera Builder",
+    "description": "NFT especial: Hedera builder",
+    "badge": "Premio especial",
+    "cta": "Participar",
+    "title": "Premio especial",
+    "intro": "¿Aún no tienes una cuenta de Hedera? No hay problema: puede ser una wallet completamente nueva creada solo para esto. Agregarla te suma al Hedera Builders Program y a un NFT especial en mainnet.",
+    "accountLabel": "Account Id de MAINNET",
+    "placeholder": "0.0.12345",
+    "below": "El Hedera Builders Program premia tu participación en la comunidad con NFTs de Community Builder por niveles, que desbloquean acceso a Discord con token-gate, eventos y networking a medida que subes de nivel.",
+    "moreInfo": "Mas Información",
+    "submit": "Enviar",
+    "sending": "Enviando...",
+    "successTitle": "¡Registro guardado!",
+    "success": "Gracias por participar en el premio especial.",
+    "errors": {
+      "invalid_account": "Ingresa un Account ID válido de Hedera (por ejemplo, 0.0.12345).",
+      "generic": "No se pudo guardar el registro. Intenta de nuevo."
+    }
+  },
+  "footer": {
+    "title": "Sigue a la Comunidad Hedera",
+    "subtitle": "Entérate de eventos, sorteos y anuncios."
   },
   "options": {
     "industry": [
@@ -120,6 +145,10 @@
     "available": "Disponibles",
     "sold": "Vendidos",
     "serialRange": "Números de serie",
+    "contestTitle": "Registros del premio especial",
+    "contestCount": "{n} registro(s) recopilados",
+    "contestAccount": "Account ID de Hedera",
+    "contestEmpty": "Aún no hay registros del premio especial.",
     "raffleTitle": "Sorteo",
     "recentBuyers": "Compradores recientes",
     "noBuyers": "No hay compradores registrados en la colección activa.",
@@ -154,7 +183,8 @@
     "tabs": {
       "create": "Crear colección",
       "active": "Colección activa",
-      "raffle": "Sorteo"
+      "raffle": "Sorteo",
+      "contest": "Premio"
     }
   }
 }

@@ -10,7 +10,12 @@
 
     <div v-if="error" class="message error">{{ $t('store.loadError') }}</div>
     <div v-else-if="pending" class="message">{{ $t('store.loading') }}</div>
-    <div v-else-if="!collection" class="panel empty">{{ $t('store.noCollection') }}</div>
+    <template v-else-if="!collection">
+      <div class="panel empty">{{ $t('store.noCollection') }}</div>
+      <div class="grid">
+        <SpecialNftCard />
+      </div>
+    </template>
 
     <template v-else>
       <section class="panel" style="margin-bottom: 18px">
@@ -29,6 +34,7 @@
           <img class="card-image" :src="item.imageUrl" :alt="item.name" loading="lazy" />
           <h3>{{ item.name }}</h3>
           <p class="small-note" style="margin: 0">{{ item.description }}</p>
+          <span class="price-badge">{{ $t('store.price') }}: <strong>1 HBAR</strong></span>
           <div class="row-between">
             <span class="badge">{{ $t('store.available') }}: <strong>{{ item.remaining }}</strong></span>
             <span class="badge">{{ $t('store.serial') }}: <strong>{{ item.serialStart }}-{{ item.serialEnd }}</strong></span>
@@ -37,6 +43,7 @@
             {{ item.remaining > 0 ? $t('store.buy') : $t('store.soldOut') }}
           </button>
         </article>
+        <SpecialNftCard />
       </div>
     </template>
 
@@ -46,6 +53,8 @@
       @close="selected = null"
       @purchased="refresh"
     />
+
+    <SocialFooter />
   </div>
 </template>
 

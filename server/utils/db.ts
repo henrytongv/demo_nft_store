@@ -68,6 +68,13 @@ export function ensureSchema() {
         )
       `
       await sql`
+        CREATE TABLE IF NOT EXISTS contest_entries (
+          id uuid PRIMARY KEY DEFAULT gen_random_uuid(),
+          hedera_account_id text NOT NULL,
+          created_at timestamptz NOT NULL DEFAULT now()
+        )
+      `
+      await sql`
         CREATE UNIQUE INDEX IF NOT EXISTS one_active_collection
         ON collections (is_active)
         WHERE is_active = true

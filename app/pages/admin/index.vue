@@ -30,6 +30,7 @@
         <button class="tab" :class="{ active: tab === 'create' }" @click="tab = 'create'">{{ $t('admin.tabs.create') }}</button>
         <button class="tab" :class="{ active: tab === 'active' }" @click="tab = 'active'">{{ $t('admin.tabs.active') }}</button>
         <button class="tab" :class="{ active: tab === 'raffle' }" @click="openRaffle">{{ $t('admin.tabs.raffle') }}</button>
+        <button class="tab" :class="{ active: tab === 'contest' }" @click="openContest">{{ $t('admin.tabs.contest') }}</button>
       </div>
 
       <section v-if="tab === 'create'" class="panel stack">
@@ -110,7 +111,7 @@
         </template>
       </section>
 
-      <section v-else class="stack">
+      <section v-else-if="tab === 'raffle'" class="stack">
         <div class="panel">
           <div class="row-between">
             <h2 style="margin:0; color:var(--gold)">{{ $t('admin.raffleTitle') }}</h2>
@@ -165,6 +166,30 @@
           </div>
         </div>
       </section>
+
+      <section v-else class="stack">
+        <div class="panel">
+          <h2 style="margin:0; color:var(--gold)">{{ $t('admin.contestTitle') }}</h2>
+          <p class="small-note" style="margin:8px 0 0">{{ $t('admin.contestCount', { n: contestEntries.length }) }}</p>
+        </div>
+        <div class="panel">
+          <div v-if="contestEntries.length === 0" class="empty">{{ $t('admin.contestEmpty') }}</div>
+          <table v-else>
+            <thead>
+              <tr>
+                <th>{{ $t('admin.date') }}</th>
+                <th>{{ $t('admin.contestAccount') }}</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr v-for="entry in contestEntries" :key="entry.id">
+                <td>{{ formatDate(entry.created_at) }}</td>
+                <td>{{ entry.hedera_account_id }}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </section>
     </template>
   </div>
 </template>
@@ -177,10 +202,11 @@ const authed = ref(false)
 const password = ref('')
 const loggingIn = ref(false)
 const loginError = ref('')
-const tab = ref<'create' | 'active' | 'raffle'>('create')
+const tab = ref<'create' | 'active' | 'raffle' | 'contest'>('create')
 
 const overview = ref<any>(null)
 const buyers = ref<any[]>([])
+const contestEntries = ref<any[]>([])
 const page = ref(1)
 const pageSize = 50
 
@@ -329,6 +355,12 @@ async function openRaffle() {
   await loadBuyers()
 }
 
+async function openContest() {
+  tab.value = 'contest'
+  const response = await $fetch('/api/admin/contest')
+  contestEntries.value = response?.entries || []
+}
+
 function randomParticipant() {
   return participants.value[Math.floor(Math.random() * participants.value.length)]
 }
@@ -363,7 +395,7 @@ function roll() {
     window.setTimeout(() => {
       confettiVisible.value = false
     }, 10000)
-  }, Math.max(0, 15000 - (Date.now() - started)))
+  }, Math.max(0, 10000 - (Date.now() - started)))
 }
 
 onMounted(async () => {
